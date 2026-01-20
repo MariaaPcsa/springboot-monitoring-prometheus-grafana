@@ -1,0 +1,190 @@
+
+ docker --version
+Docker version 28.3.3, build 980b856
+
+ docker-compose --version
+Docker Compose version v2.39.2-desktop.1
+
+$ java -version
+java version "21" 2023-09-19 LTS
+Java(TM) SE Runtime Environment (build 21+35-LTS-2513)
+Java HotSpot(TM) 64-Bit Server VM (build 21+35-LTS-2513, mixed mode, sharing)
+
+
+Perfeito, Maria! Vou te passar um fluxo passo a passo para rodar esse projeto sempre no seu ambiente, de forma limpa e rápida, sem conflitos de containers antigos.
+
+1️ Abrir o terminal no diretório do projeto
+cd C:\Users\maria\git\java observabilidade\conteudo_final\prometheus-grafana
+
+2️  Construir os JARs com Maven (se tiver feito alterações no código)
+cd app
+mvn clean package
+cd ..
+cd client
+mvn clean package   # se o client também for um app Java
+cd ..
+
+
+Nota: Se não houver alterações no código, você pode pular este passo.
+
+3️ Subir todos os containers
+docker compose -f docker-compose.yaml -p prometheus-grafana up -d
+
+
+Isso vai criar/startar todos os containers definidos no seu docker-compose.yaml.
+
+-d = roda em background.
+
+4️ Verificar se os containers estão rodando
+docker ps
+
+
+Deve aparecer algo assim:
+
+
+
+5️ Testar endpoints
+
+Spring Boot health: http://localhost:8080/actuator/health
+
+Grafana: http://localhost:3000
+ (admin/admin)
+
+Prometheus: http://localhost:9090
+
+6️⃣ Parar os containers (quando for desligar o projeto)
+docker compose -f docker-compose.yaml -p prometheus-grafana down
+
+
+Isso para todos os containers e remove redes criadas pelo Compose.
+
+Se quiser remover volumes e dados persistentes, use:
+
+docker compose -f docker-compose.yaml -p prometheus-grafana down --volumes
+
+
+💡 Dica: Se quiser rodar o projeto sempre limpo, sem risco de conflito de nomes antigos:
+
+docker compose -f docker-compose.yaml -p prometheus-grafana down --volumes --remove-orphans
+docker compose -f docker-compose.yaml -p prometheus-grafana up -d
+
+
+Isso garante que todos os containers antigos e volumes órfãos sejam removidos antes de subir.
+
+java -jar forum.jar
+
+rebilda 
+mvn clean package
+
+
+
+Rotas abaixo estão ok mais precisa de senha
+
+prujeto usa h2 
+
+http://localhost:8080/actuator
+http://localhost:8080/topicos
+localhost:8080/actuator/prometheus
+localhost:8080/actuator/prometheus. 
+localhost:8080/auth
+forom-api
+
+slack.com
+curl -X POST --data-urlencode "payload={\"channel\": \"#my-channel-here\", \"username\": \"webhookbot\", \"text\": \"Isso é postado em #my-channel-here e originário de um bot chamado webhookbot.\", \"icon_emoji\": \":ghost:\"}" https://hooks.slack.com/services/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
+
+para criar  slack  de alerta  do projeto 
+
+https://slack.com/intl/pt-br/
+
+
+
+ok 
+http://localhost/metrics
+http://localhost/health
+http://localhost/info
+
+{
+"email":"moderador@email.com", 
+"senha":"123456"
+}
+
+
+ok
+Grafana → http://localhost:3000  o primeiro acessa é  admin  admin
+
+ok
+query
+✔ Prometheus → http://localhost:9090
+
+ok
+status
+✔ API direto → http://localhost:8080/actuator/health
+
+
+ok
+✔ Alertmanager → http://localhost:9093
+
+ok
+
+
+PS C:\Users\maria\git\java observabilidade\monitoramentografana_conteudo_01\grafana> 
+para da o permissão ao todos o comando é : 
+
+obs: da permissão total na pasta grafana 
+chmod 777 grafana 
+
+róximos passos úteis:
+
+Para ver as permissões atuais no Git Bash:
+
+ls -lhd grafana
+
+
+Isso vai mostrar algo como:
+
+drwxrwxrwx 1 maria 197121 0 Jan 15 12:34 grafana
+
+
+2º para rebilda aaplicação
+maria@DESKTOP-4KSN4HD MINGW64 ~/git/java observabilidade/monitoramentografana_conteudo_01/app (main)
+$ docker-compose up
+
+
+3º para startar aaplicação
+PS C:\Users\maria\git\java observabilidade\monitoramentografana_conteudo_01\app\target> 
+java -jar forum.jar
+
+
+1º passo PS C:\Users\maria\git\java observabilidade\conteudo_final\prometheus-grafana\app> mvn clean package
+
+2º para startar aaplicação
+PS C:\Users\maria\git\java observabilidade\monitoramentografana_conteudo_01\app\target> 
+java -jar forum.jar
+
+
+Importando dashboard da comunidade
+ site de Dashboards do Grafana
+https://grafana.com/grafana/dashboards/11378-justai-system-monitor/
+copia o ID 11378
+
+https://grafana.com/grafana/dashboards/
+
+Contudo, você não precisa fazer um dashboard completamente novo para cada nova aplicação ou produto diferente.
+É possível trabalhar com dashboards prontos que são cedidos pela comunidade, que é algo sensacional no Grafana.
+
+Vamos imaginar que queremos um dashboard pronto para conferir a JVM. Como fazemos isso? Na lateral esquerda do Grafana, 
+vamos apertar no símbolo "+" e escolher a opção "Import" onde podemos importar um JSON inteiro ou o ID de um dashboard.
+
+No site de Dashboards do Grafana, pesquise por "Spring Boot" e você vai encontrar várias referências. 
+Uma delas é Spring Boot 2.1 System Monitor. Podemos copiar o ID 11378, colocar no campo de importação do Grafana e clicar em "Load" para carregar.
+
+logback_events_total{application="$application", instance="$instance", Job="app-forum-api"}
+increase(logback_events_total{application="$application", instance="$instance", job="app-forum-api", level="warn"})
+increase(logback_events_total{application="$application", instance="$instance", job="app-forum-api"}, level="warn"}[5m])
+sum(increase(logback_events_total{application="$application", instance="$instance", job="app-forum-api"}, level="warn"[5m]))
+sum(increase(logback_events_total{application="$application", instance="$instance", job="app-forum-api"}, level="warn"[5m]))
+increase(logback_events_total{application="$application", instance="$instance", job="app-forum-api"}, level="warn"[5m])
+increase(logback_events_total{application="$application", instance="$instance", job="app-forum-api", level="error"}[5m])
+sum(increase(logback_events_total{application="$application", instance="$instance", job="app-forum-api"}, level="warn"[5m]))
+sum(increase(logback_events_total{application="$application", instance="$instance", job="app-forum-api", level="error"}[5m]))
+hikaricp_connections application="$application", instance="$instance", job="app-forum-api", pool="$pool"}
