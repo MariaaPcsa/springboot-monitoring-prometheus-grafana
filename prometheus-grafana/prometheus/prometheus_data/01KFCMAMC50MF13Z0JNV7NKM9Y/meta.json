@@ -1,0 +1,18 @@
+{
+	"ulid": "01KFCMAMC50MF13Z0JNV7NKM9Y",
+	"minTime": 1768865953598,
+	"maxTime": 1768867200000,
+	"stats": {
+		"numSamples": 105280,
+		"numFloatSamples": 105280,
+		"numSeries": 1021,
+		"numChunks": 1034
+	},
+	"compaction": {
+		"level": 1,
+		"sources": [
+			"01KFCMAMC50MF13Z0JNV7NKM9Y"
+		]
+	},
+	"version": 1
+}

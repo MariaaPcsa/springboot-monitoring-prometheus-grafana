@@ -147,8 +147,12 @@ drwxrwxrwx 1 maria 197121 0 Jan 15 12:34 grafana
 
 2º para rebilda aaplicação
 maria@DESKTOP-4KSN4HD MINGW64 ~/git/java observabilidade/monitoramentografana_conteudo_01/app (main)
-$ docker-compose up
+$  mvn clean package
 
+
+
+2.2 PS C:\Users\maria\git\java observabilidade\conteudo_final\prometheus-grafana>
+docker compose up -d
 
 3º para startar aaplicação
 PS C:\Users\maria\git\java observabilidade\monitoramentografana_conteudo_01\app\target> 
@@ -165,7 +169,7 @@ java -jar forum.jar
 Importando dashboard da comunidade
  site de Dashboards do Grafana
 https://grafana.com/grafana/dashboards/11378-justai-system-monitor/
-copia o ID 11378
+copia o ID
 
 https://grafana.com/grafana/dashboards/
 
@@ -188,3 +192,41 @@ increase(logback_events_total{application="$application", instance="$instance", 
 sum(increase(logback_events_total{application="$application", instance="$instance", job="app-forum-api"}, level="warn"[5m]))
 sum(increase(logback_events_total{application="$application", instance="$instance", job="app-forum-api", level="error"}[5m]))
 hikaricp_connections application="$application", instance="$instance", job="app-forum-api", pool="$pool"}
+
+Próximo passo: testar endpoints
+
+Spring Boot API
+http://localhost:8080/actuator/health
+ → deve retornar { "status": "UP" }
+
+H2 Console
+http://localhost:8080/h2-console
+
+JDBC URL: jdbc:h2:mem:forumdb
+
+User: sa
+
+Password: deixe vazio
+
+Grafana
+http://localhost:3000
+ → login admin/admin
+
+Prometheus
+http://localhost:9090
+
+Alertmanager
+http://localhost:9093
+
+Faça backup do .env e dos volumes do MySQL/Grafana antes de grandes alterações.
+
+Para atualizar dashboards ou o app, basta rebuilar:
+
+cd app
+mvn clean package
+docker compose up -d --build
+
+
+Para logs em tempo real:
+
+docker compose logs -f app-forum-api

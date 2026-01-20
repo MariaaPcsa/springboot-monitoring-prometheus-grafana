@@ -25,10 +25,10 @@ services:
     container_name: mysql-forum-api
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: 'forum'
-      MYSQL_USER: 'forum'
-      MYSQL_PASSWORD: 'Bk55yc1u0eiqga6e'
-      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: yes
       MYSQL_ROOT_HOST: '%'
     volumes:
       - ./mysql:/docker-entrypoint-initdb.d
@@ -50,14 +50,16 @@ services:
       - api
       - database
       - cache
+    env_file:
+      - .env
     depends_on:
       - mysql-forum-api
     healthcheck:
       test: "curl -sS http://app-forum-api:8080/actuator/health"
-      interval: 1s
+      interval: 10s
       timeout: 30s
       retries: 60
-  
+
   proxy-forum-api:
     image: nginx
     container_name: proxy-forum-api
@@ -95,15 +97,17 @@ services:
     depends_on:
       - proxy-forum-api
     user: root
-  
-  alertmanager-forum-api: 
+
+  alertmanager-forum-api:
     image: prom/alertmanager
     container_name: alertmanager-forum-api
-    volumes: 
+    volumes:
       - ./alertmanager:/etc/alertmanager/:ro
-    ports: 
+    env_file:
+      - .env
+    ports:
       - 9093:9093
-    command: 
+    command:
       - --config.file=/etc/alertmanager/alertmanager.yml
     networks:
       - monit
@@ -111,21 +115,21 @@ services:
       - prometheus-forum-api
     user: root
 
-
   grafana-forum-api:
     image: grafana/grafana
     container_name: grafana-forum-api
     volumes:
       - ./grafana:/var/lib/grafana
     restart: unless-stopped
+    env_file:
+      - .env
     ports:
-      - 3000:3000
+      - "${GRAFANA_PORT}:3000"
     networks:
       - monit
     depends_on:
       - alertmanager-forum-api
     user: root
-
 
   client-forum-api:
     build:
