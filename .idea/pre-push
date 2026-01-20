@@ -1,0 +1,25 @@
+#!/bin/bash
+# pre-push hook: bloqueia commits com secrets antes do push
+
+# Lista de padrões de secrets a serem bloqueados
+secrets=(
+"https://hooks.slack.com"  # Slack Webhooks
+"senha"                    # qualquer ocorrência de 'senha'cd
+"token"                    # qualquer ocorrência de 'token'
+"AKIA"                      # AWS Access Key
+"AIza"                      # Google API Key
+)
+
+# Verifica os commits staged
+for secret in "${secrets[@]}"
+do
+  if git diff --cached | grep -q "$secret"; then
+    echo "==============================================="
+    echo "🚨 Push bloqueado: secret encontrado -> $secret"
+    echo "Remova o segredo do commit antes de enviar!"
+    echo "==============================================="
+    exit 1
+  fi
+done
+
+exit 0
